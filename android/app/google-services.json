@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "886227146773",
+    "project_id": "retos-en-firebase",
+    "storage_bucket": "retos-en-firebase.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:886227146773:android:b94c22aa71a5cb25c2961c",
+        "android_client_info": {
+          "package_name": "com.example.retos_en_firebase"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "886227146773-5fielkjqlbg5q5mphs5djog280ag2qla.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBuZS1811fgzXUqopKTg5zQc1-oMsuc0BA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "886227146773-5fielkjqlbg5q5mphs5djog280ag2qla.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
