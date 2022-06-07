@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -21,33 +22,161 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'CRUD EN FLUTTER'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
+
+  inputForm(String sugerencia, Function getCampo) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: TextFormField(
+        decoration: InputDecoration(
+            labelText: sugerencia,
+            fillColor: Colors.white,
+            focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.blue, width: 2.0))),
+        onChanged: (String name) {
+          getCampo(name);
+        },
+      ),
+    );
+  }
+
+  btnCrud(String nombre, Color color, Function accion) {
+    return ElevatedButton(
+      onPressed: () {
+        accion();
+      },
+      child: Text(nombre),
+      style: ElevatedButton.styleFrom(
+          primary: color,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          textStyle: const TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 18)),
+    );
+  }
+
+  viewReg(document, string) {
+    try {
+      if (document[string] != null) {
+        return Expanded(child: Text(document[string]));
+      }
+    } catch (e) {
+      return const Expanded(child: Text("vacío"));
+    }
+  }
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  String estudianteNombre = "";
+  String estudianteCodigo = "";
+  String estudiantePrograma = "";
+  String estudianteCalificacion = "";
+
+  getEstudianteCodigo(x) {
+    estudianteCodigo = x;
+  }
+
+  getEstudianteNombre(x) {
+    estudianteNombre = x;
+  }
+
+  getEstudiantePrograma(x) {
+    estudiantePrograma = x;
+  }
+
+  getEstudianteCalificacion(x) {
+    estudianteCalificacion = x;
+  }
+
+  crearRegistro() {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection("users").doc(estudianteCodigo);
+
+    documentReference
+        .set(
+          {
+            "id": estudianteCodigo,
+            "nombre": estudianteNombre,
+            "calificación": estudianteCalificacion,
+            "programa": estudiantePrograma
+          },
+          SetOptions(merge: true),
+        )
+        .catchError((error) => print("Failed to merge data: $error"))
+        .whenComplete(() {
+          print("$estudianteNombre registrado");
+        });
+  }
+
+  leerRegistro() {
+    FirebaseFirestore.instance
+        .collection("users")
+        .doc(estudianteCodigo)
+        .get()
+        .then((DocumentSnapshot documentSnapshot) {
+      if (documentSnapshot.exists) {
+        print("Document data: ${documentSnapshot.data()}");
+        Map<String, dynamic> data =
+            documentSnapshot.data() as Map<String, dynamic>;
+        print("Document data: ${data['nombre']}");
+
+        AlertDialog alerta = AlertDialog(
+          title: const Text("LECTURA DE ESTUDIANTE"),
+          content: Column(
+            children: [
+              Text("Nombre: ${data['nombre']}"),
+              Text("Id: ${data['id']}"),
+              Text("Promedio: ${data['calificación']}"),
+              Text("Programa: ${data['programa']}")
+            ],
+          ),
+        );
+        showDialog(context: context, builder: (BuildContext context) => alerta);
+      } else {
+        print("Registro no existe en la Base de datos");
+      }
+    });
+  }
+
+  actualizarRegistro() {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection("users").doc(estudianteCodigo);
+
+    documentReference
+        .update({
+          "id": estudianteCodigo,
+          "nombre": estudianteNombre,
+          "calificación": estudianteCalificacion,
+          "programa": estudiantePrograma
+        })
+        .then((value) => print("Registro actualizado"))
+        .catchError(
+            (error) => print("Actualización de registrol fallido: $error"));
+  }
+
+  eliminarRegistro() {
+    DocumentReference documentReference =
+        FirebaseFirestore.instance.collection("users").doc(estudianteCodigo);
+
+    documentReference
+        .delete()
+        .then((value) => print("Registro Eliminado"))
+        .catchError(
+            (error) => print("Eliminación de registro fallido: $error"));
+  }
 
   List usuarios = [];
 
@@ -66,6 +195,8 @@ class _MyHomePageState extends State<MyHomePage> {
     QuerySnapshot users = await collectionReference.get();
     // la cantidad de registros que tenemos en docs y si es diferente
     // de cero recorriendo con un array de elementos
+    print("ESTO ES");
+    print(users.docs.toString());
     if (users.docs.isNotEmpty) {
       for (var doc in users.docs) {
         // ignore: avoid_print
@@ -75,65 +206,94 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Center(
+          child: Column(
+              //mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                widget.inputForm("Nombre", getEstudianteNombre),
+                widget.inputForm("Codigo de Estudiante", getEstudianteCodigo),
+                widget.inputForm("Carrera", getEstudiantePrograma),
+                widget.inputForm("Promedio", getEstudianteCalificacion),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    widget.btnCrud("Crear", Colors.green, crearRegistro),
+                    widget.btnCrud("Leer", Colors.yellow, leerRegistro),
+                    widget.btnCrud(
+                        "Actualizar", Colors.orange, actualizarRegistro),
+                    widget.btnCrud("Eliminar", Colors.red, eliminarRegistro)
+                  ],
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    textDirection: TextDirection.ltr,
+                    children: const <Widget>[
+                      Expanded(
+                          child: Text(
+                        "Nombre",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )),
+                      Expanded(
+                          child: Text(
+                        "Código",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )),
+                      Expanded(
+                          child: Text(
+                        "Promedio",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      )),
+                      Expanded(
+                          child: Text(
+                        "Carrera",
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ))
+                    ],
+                  ),
+                ),
+                StreamBuilder<QuerySnapshot>(
+                    stream: FirebaseFirestore.instance
+                        .collection("users")
+                        .snapshots(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            DocumentSnapshot documentSnapshot =
+                                snapshot.data!.docs[index];
+                            return Row(
+                              textDirection: TextDirection.ltr,
+                              children: [
+                                widget.viewReg(documentSnapshot, "id"),
+                                widget.viewReg(documentSnapshot, "nombre"),
+                                widget.viewReg(
+                                    documentSnapshot, "calificación"),
+                                widget.viewReg(documentSnapshot, "programa")
+                              ],
+                            );
+                          },
+                          itemCount: snapshot.data!.docs.length,
+                        );
+                      } else {
+                        return const Align(
+                          alignment: FractionalOffset.bottomCenter,
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                    })
+              ]),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
