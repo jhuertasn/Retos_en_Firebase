@@ -184,90 +184,102 @@ class _MyHomePageState extends State<crudApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /* appBar: AppBar(
         title: Text(widget.title),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Column(
-              //mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                widget.inputForm("Nombre", getEstudianteNombre),
-                widget.inputForm("Codigo de Estudiante", getEstudianteCodigo),
-                widget.inputForm("Carrera", getEstudiantePrograma),
-                widget.inputForm("Promedio", getEstudianteCalificacion),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    widget.btnCrud("Crear", Colors.green, crearRegistro),
-                    widget.btnCrud("Leer", Colors.yellow, leerRegistro),
-                    widget.btnCrud(
-                        "Actualizar", Colors.orange, actualizarRegistro),
-                    widget.btnCrud("Eliminar", Colors.red, eliminarRegistro)
-                  ],
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    textDirection: TextDirection.ltr,
-                    children: const <Widget>[
-                      Expanded(
-                          child: Text(
-                        "Nombre",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
-                      Expanded(
-                          child: Text(
-                        "Código",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
-                      Expanded(
-                          child: Text(
-                        "Promedio",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      )),
-                      Expanded(
-                          child: Text(
-                        "Carrera",
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ))
+      ),*/
+      body: Container(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Center(
+            child: Column(
+                //mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.all(16.0),
+                    child: Text(
+                      'Registro de Estudiantes',
+                      style: TextStyle(fontSize: 25),
+                    ),
+                  ),
+                  widget.inputForm("Nombre", getEstudianteNombre),
+                  widget.inputForm("Codigo de Estudiante", getEstudianteCodigo),
+                  widget.inputForm("Carrera", getEstudiantePrograma),
+                  widget.inputForm("Promedio", getEstudianteCalificacion),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: <Widget>[
+                      widget.btnCrud("Crear", Colors.green, crearRegistro),
+                      widget.btnCrud("Leer", Colors.yellow, leerRegistro),
+                      widget.btnCrud(
+                          "Actualizar", Colors.orange, actualizarRegistro),
+                      widget.btnCrud("Eliminar", Colors.red, eliminarRegistro)
                     ],
                   ),
-                ),
-                StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection("users")
-                        .snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            DocumentSnapshot documentSnapshot =
-                                snapshot.data!.docs[index];
-                            return Row(
-                              textDirection: TextDirection.ltr,
-                              children: [
-                                widget.viewReg(documentSnapshot, "id"),
-                                widget.viewReg(documentSnapshot, "nombre"),
-                                widget.viewReg(
-                                    documentSnapshot, "calificación"),
-                                widget.viewReg(documentSnapshot, "programa")
-                              ],
-                            );
-                          },
-                          itemCount: snapshot.data!.docs.length,
-                        );
-                      } else {
-                        return const Align(
-                          alignment: FractionalOffset.bottomCenter,
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                    })
-              ]),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      textDirection: TextDirection.ltr,
+                      children: const <Widget>[
+                        Expanded(
+                            child: Text(
+                          "Nombre",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
+                        Expanded(
+                            child: Text(
+                          "Código",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
+                        Expanded(
+                            child: Text(
+                          "Promedio",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        )),
+                        Expanded(
+                            child: Text(
+                          "Carrera",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ))
+                      ],
+                    ),
+                  ),
+                  StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection("users")
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasData) {
+                          return ListView.builder(
+                            shrinkWrap: true,
+                            itemBuilder: (context, index) {
+                              DocumentSnapshot documentSnapshot =
+                                  snapshot.data!.docs[index];
+                              return Row(
+                                textDirection: TextDirection.ltr,
+                                children: [
+                                  widget.viewReg(documentSnapshot, "id"),
+                                  widget.viewReg(documentSnapshot, "nombre"),
+                                  widget.viewReg(
+                                      documentSnapshot, "calificación"),
+                                  widget.viewReg(documentSnapshot, "programa")
+                                ],
+                              );
+                            },
+                            itemCount: snapshot.data!.docs.length,
+                          );
+                        } else {
+                          return const Align(
+                            alignment: FractionalOffset.bottomCenter,
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                      })
+                ]),
+          ),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );

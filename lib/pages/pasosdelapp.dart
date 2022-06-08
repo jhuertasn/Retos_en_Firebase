@@ -8,62 +8,62 @@ class Pasos extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: const MyHomePage(title: 'Pasos Para entrar al cine'),
+      home: const PasosdelApp(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
+class PasosdelApp extends StatefulWidget {
+  const PasosdelApp({
+    Key? key,
+  }) : super(key: key);
+  //final String title;
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<PasosdelApp> createState() => _PasosdelAppState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _PasosdelAppState extends State<PasosdelApp> {
   int _actualpaso = 0;
   List<Step> mispasos = [
     const Step(
         title: Text("Paso 1"),
-        content: Text(
-            "Reservar tus asientos en la pagina web o comprar tus boletos en la boleteria")),
+        content: Text("Ir hacia la pestaña de Lista de Estudiantes.")),
     const Step(
         title: Text("Paso 2"),
-        content: Text(
-            "Portar mascarilla KN95 y desinfectarse las manos antes de ingresar al cine")),
+        content: Text("Ingresar Nombre del Estudiante.")),
     const Step(
         title: Text("Paso 3"),
-        content: Text(
-            "Presentar tus boletos ante la encargada de la entrada del cine.")),
+        content: Text("Ingresar codigo del Estudiante.")),
     const Step(
         title: Text("Paso 4"),
-        content: Text(
-            "Opcional: si gustas puedes comprar tu bebida favorita y canchita antes de ingresar.")),
+        content: Text("Ingresar carrera que pertenece el estudiante.")),
     const Step(
         title: Text("Paso 5"),
-        content:
-            Text("Entrar a la sala de cine y ubicarse en su asiento elegido.")),
+        content: Text("Ingresar promedio final del estudiante.")),
     const Step(
         title: Text("Paso 6"),
         content: Text(
-            "Observar y ubicar las salidas de emergencia ante una eventualidad.")),
-    const Step(title: Text("Paso 7"), content: Text("Disfrutar la pelicula.")),
+            "Pulsar crear para crear registro de estudiante en la base de datos.")),
+    const Step(
+        title: Text("Paso 7"),
+        content: Text(
+            "Si tiene el codigo de estudiante presione Leer para ver si esta registrado.")),
     const Step(
         title: Text("Paso 8"),
         content: Text(
-            "si tienes basura a la hora de salir nuestros colaboradores te estaran esperando con los tachos de basura.")),
+            "Si desea actualizar datos dirijase a codigo de estudiante y presione Actualizar.")),
     const Step(
         title: Text("Paso 9"),
         content: Text(
-            "No te olvides comentar a tus amigos de tu experiencia en Cine TakyaINC.")),
+            "Si desea eliminar un Registro, seleccione codigo de estudiante y presione Eliminar.")),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*  appBar: AppBar(
         title: Text(widget.title),
-      ),
+      ),*/
       body: Center(
         child: Stepper(
           //Indica el paso actual del Stepper

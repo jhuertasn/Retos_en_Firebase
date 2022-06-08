@@ -10,19 +10,22 @@ class TabBarDemo extends StatelessWidget {
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
-          appBar: AppBar(
-            bottom: const TabBar(
-              tabs: [
-                Tab(icon: Icon(Icons.food_bank)),
-                Tab(icon: Icon(Icons.people_alt)),
-              ],
+          appBar: PreferredSize(
+            preferredSize: Size.fromHeight(49),
+            child: AppBar(
+              bottom: const TabBar(
+                tabs: [
+                  Tab(icon: Icon(Icons.food_bank)),
+                  Tab(icon: Icon(Icons.people_alt)),
+                ],
+              ),
+              /* title: Text(
+                'TabBar',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 20),
+              ),*/
+              backgroundColor: Color.fromARGB(134, 18, 221, 201),
             ),
-            title: Text(
-              'TabBar',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 30),
-            ),
-            backgroundColor: Color.fromARGB(137, 71, 177, 120),
           ),
           body: TabBarView(
             children: [
@@ -31,18 +34,21 @@ class TabBarDemo extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      "Bienvenidos al Cine TakyaInc",
+                      "Bienvenidos al App de Docente",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 40,
+                        fontSize: 35,
                       ),
                     ),
                     SizedBox(
                       height: 40,
                     ),
                     Image.network(
-                        'https://static.eldiario.es/clip/86011034-d175-42e9-b127-e1553dc2325f_16-9-aspect-ratio_default_0.jpg'),
+                      'https://definicion.de/wp-content/uploads/2008/09/profesor.jpg',
+                      height: 300,
+                      width: 300,
+                    ),
                   ],
                 ),
               ),
@@ -51,11 +57,11 @@ class TabBarDemo extends StatelessWidget {
                   children: const <Widget>[
                     ListTile(
                       title: Text(
-                        'Presentadores',
+                        'Desarrolladores',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 25,
-                            color: Color.fromARGB(149, 6, 139, 104),
+                            color: Color.fromARGB(148, 196, 141, 12),
                             fontWeight: FontWeight.bold),
                       ),
                     ),

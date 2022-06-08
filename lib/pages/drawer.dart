@@ -18,10 +18,10 @@ class HomeState extends State<Home> {
         return TabBarDemo();
       case 2:
         return crudApp(
-          title: 'Crud',
+          title: 'Registro de Estudiantes',
         );
       case 3:
-        return Pasos();
+        return PasosdelApp();
     }
   }
 
@@ -38,7 +38,7 @@ class HomeState extends State<Home> {
       appBar: AppBar(
         backgroundColor: Color.fromARGB(51, 134, 230, 24),
         title: Text(
-          'Takia Inc',
+          'Registro App',
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
         ),
       ),
@@ -46,18 +46,18 @@ class HomeState extends State<Home> {
         child: ListView(
           children: <Widget>[
             UserAccountsDrawerHeader(
-              accountName: Text('Ejercicio Api',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold)),
-              accountEmail: Text('Docente: Henry Villanueva Monrroy',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold)),
-              //currentAccountPicture: Image.asset('assets/kediko.png')
-            ),
+                accountName: Text('Ejercicio Crud',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold)),
+                accountEmail: Text('Docente: Henry Villanueva Monrroy',
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold)),
+                currentAccountPicture: Image.network(
+                    'https://img2.freepng.es/20200413/cx/transparent-icon-design-5e9514e3e94e76.6287660515868285159556.jpg')),
             ListTile(
               title: Text('Autores'),
               leading: Icon(Icons.vaccines),

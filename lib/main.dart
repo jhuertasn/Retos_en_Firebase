@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Takya INC',
+      title: 'Registro App',
       debugShowCheckedModeBanner: false,
       home: Home(),
       theme: ThemeData(
@@ -49,17 +49,19 @@ class inicio extends StatelessWidget {
           SizedBox(
             height: 20,
           ),
-          /*Image.asset(
-            'assets/kediko.png',
+          Image.network(
+            'https://veedorfiscal.files.wordpress.com/2014/09/registro1.jpg?w=627&h=470',
             height: 300,
             width: 300,
-          ),*/
+          ),
           SizedBox(
             height: 20,
           ),
           Text(
-            "Bienvenido a Cine TakyaINC",
-            style: TextStyle(fontFamily: 'Marker', fontSize: 25),
+            "Bienvenido a Registro de estudiantes TakyaINC",
+            //cambiar orientacion del texto a centrado
+            textAlign: TextAlign.center,
+            style: TextStyle(fontFamily: 'Marker', fontSize: 23),
           )
         ],
       ),
